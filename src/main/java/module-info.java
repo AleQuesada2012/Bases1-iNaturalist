@@ -4,7 +4,7 @@ module tec.bases.bases1inaturalist {
     requires javafx.web;
 
     requires org.kordamp.ikonli.javafx;
-    requires eu.hansolo.tilesfx;
+    requires java.sql;
 
     opens tec.bases.bases1inaturalist to javafx.fxml;
     exports tec.bases.bases1inaturalist;
