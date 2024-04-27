@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="tec.bases.bases1inaturalist.SignIn"
+      alignment="CENTER"
+      spacing="10"
+      style="-fx-padding: 20px;">
+
+   <Label text="¡Bienvenido a Bases-Naturalist!" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+   <GridPane alignment="CENTER" hgap="10" vgap="10">
+      <columnConstraints>
+         <ColumnConstraints hgrow="NEVER" />
+         <ColumnConstraints hgrow="ALWAYS" />
+      </columnConstraints>
+
+      <rowConstraints>
+         <RowConstraints vgrow="NEVER" />
+         <RowConstraints vgrow="NEVER" />
+      </rowConstraints>
+
+      <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+      <Label text="correo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+      <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+   </GridPane>
+
+   <Button text="Sign In" onAction="#signInButtonClicked" style="-fx-padding: 10px 20px;" />
+</VBox>
