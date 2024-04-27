@@ -17,9 +17,9 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sign-in.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 400, 300);
+        stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
         //lógica
@@ -54,8 +54,8 @@ public class HelloApplication extends Application {
         ));
         List<String> licencias = new ArrayList<>(List.of("Creative Commons","Royalty-free Extended License","Enterprise License",
                 "Public Domain", "Commercial Image License", "Rights Managed License"));
-        insertCountries(conexionSQL, countryNames);
-        insertLicenses(conexionSQL, licencias);
+        //insertCountries(conexionSQL, countryNames);
+        //insertLicenses(conexionSQL, licencias);
         conexionSQL.close();
     }
 
