@@ -23,8 +23,6 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         //lógica
-        conexionSQL = getConnection();
-        conexionSQL.close();
     }
 
     public static void main(String[] args) {
