@@ -13,8 +13,8 @@
          <HBox spacing="55.0">
             <children>
                  <Button fx:id="btnCrearObs" style="-fx-padding: 10px 20px;" text="Crear Observación" />
-                 <Button fx:id="btnMostrarObs" style="-fx-padding: 10px 20px;" text="Mostrar Observaciones" />
-                 <Button fx:id="btnMostrarTax" style="-fx-padding: 10px 20px;" text="Mostrar Taxonomías" />
+                 <Button fx:id="btnMostrarObs" style="-fx-padding: 10px 20px;" text="Mostrar Observaciones"/>
+                 <Button fx:id="btnMostrarTax" style="-fx-padding: 10px 20px;" text="Mostrar Taxonomías" onAction="#clickBtnTodasObs"/>
             </children>
          </HBox>
       </VBox>

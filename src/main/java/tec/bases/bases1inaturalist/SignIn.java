@@ -43,6 +43,7 @@ public class SignIn {
         nombre = arr[0]; apellido = arr[1]; apellido2 = arr[2];
         if (userExists(connection, nombre, apellido, apellido2, Email)) {
             System.out.println("User found, real user acquired");
+            connection.close();
             launchMainMenu();
         }
         else {
