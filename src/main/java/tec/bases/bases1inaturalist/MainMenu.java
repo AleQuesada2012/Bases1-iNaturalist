@@ -60,4 +60,30 @@ public class MainMenu {
             e.printStackTrace();
         }
     }
+
+    public void clickBtnCrearObs(ActionEvent actionEvent) {
+        Stage currentStage = (Stage) nombreLabel.getScene().getWindow();
+        try {
+            // Se carga el archivo FXML para el tablero de juego
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("crear-observacion.fxml"));
+            Parent gameBoardRoot = loader.load();
+            Scene gameBoardScene = new Scene(gameBoardRoot);
+
+
+            // Se crea una nueva Stage (ventana) para la pantalla de juego
+            Stage gameBoardStage = new Stage();
+            gameBoardStage.setScene(gameBoardScene);
+            gameBoardStage.setTitle("Bases-iNaturalist - Crear Observación");
+
+            // Se obtiene la referencia a la clase de control para la siguiente pantalla
+            ObservationFormController control = loader.getController();
+            control.initValores(userID);
+
+            // Cierra la ventana actual y abre el tablero
+            currentStage.close();
+            gameBoardStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

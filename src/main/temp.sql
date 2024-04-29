@@ -1,21 +1,34 @@
-CREATE TABLE GPS_Coordinates(id_coordinates NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+CREATE SEQUENCE coord_sequence
+    START WITH 1
+    INCREMENT BY 1
+    CACHE 5;
+
+CREATE TABLE GPS_Coordinates(id_coordinates NUMBER NOT NULL PRIMARY KEY,
                              latidude VARCHAR2(50),
                              longitude VARCHAR2(50));
 
 CREATE TABLE Country(id_country NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                      country_name VARCHAR2(150));
-DROP TABLE GPS_COORDINATES;
+
 CREATE TABLE Use_License(id_license NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                          license_type VARCHAR2(150));
 
-CREATE TABLE Image(id_image NUMBER GENERATED ALWAYS AS IDENTITY,
+
+CREATE SEQUENCE image_sequence
+    START WITH 1
+    INCREMENT BY 1
+    CACHE 5;
+CREATE TABLE Image(id_image NUMBER NOT NULL PRIMARY KEY,
                    id_owner NUMBER NOT NULL,
-                   "date" DATE,
+                   date_ DATE,
                    fk_id_coordinates NUMBER NOT NULL,
                    fk_license_id NUMBER NOT NULL,
-                   URL VARCHAR2(500), FOREIGN KEY (id_owner) REFERENCES PERSON,
+                   URL VARCHAR2(500),
+                   FOREIGN KEY (id_owner) REFERENCES PERSON,
                    FOREIGN KEY(fk_id_coordinates) REFERENCES GPS_Coordinates,
                    FOREIGN KEY(fk_license_id) REFERENCES Use_License);
+
 
 
 
@@ -40,26 +53,30 @@ CREATE TABLE Taxonomia(
                           PRIMARY KEY(id_taxonomy)
 );
 
+
 CREATE TABLE Observation(
                             observation_id NUMBER GENERATED AS IDENTITY PRIMARY KEY,
                             fk_id_taxon NUMBER NOT NULL,
                             fk_id_observer NUMBER NOT NULL,
                             fk_id_coordinates NUMBER NOT NULL,
-                            "date" DATE NOT NULL,
-                            "comment" VARCHAR2(500),
+                            date_ DATE NOT NULL,
+                            comment_ VARCHAR2(500),
                             fk_id_image NUMBER NOT NULL,
                             FOREIGN KEY(fk_id_taxon) REFERENCES TAXONOMIA,
                             FOREIGN KEY(fk_id_observer) REFERENCES USUARIO,
                             FOREIGN KEY(fk_id_coordinates) REFERENCES GPS_Coordinates);
 
+
+
+
 -- prueba de observación
 -- debe existir la referencia en: Taxonomia, Usuario, Coordenadas, e Imagen
 
-INSERT INTO GPS_COORDINATES(latidude, longitude) VALUES ('31.20421226393401', '29.94574961570779'); -- Zoológico de Alejandría
-INSERT INTO IMAGE(id_owner, "date", fk_id_coordinates, fk_license_id, URL) VALUES (1, TO_DATE('05/07/2001', 'DD/MM/YYYY'), 1, 1, 'C:\Users\Public\iNaturalist\JaculusOrientalis.jpg');
+INSERT INTO GPS_COORDINATES(id_coordinates, latidude, longitude) VALUES (coord_sequence.nextval, '31.20421226393401', '29.94574961570779'); -- Zoológico de Alejandría
+INSERT INTO IMAGE(id_image,id_owner, date_, fk_id_coordinates, fk_license_id, URL) VALUES (image_sequence.nextval, 1, TO_DATE('05/07/2001', 'DD/MM/YYYY'), 1, 1, 'C:\Users\Public\iNaturalist\JaculusOrientalis.jpg');
 
-insert into Observation (fk_id_taxon, fk_id_observer, fk_id_coordinates, "date", "comment", fk_id_image) VALUES (13, 1, 1, TO_DATE('05/07/2001', 'DD/MM/YYYY'), 'Miren qué lindo', 1);
-insert into Observation (fk_id_taxon, fk_id_observer, fk_id_coordinates, "date", "comment", fk_id_image) VALUES (30, 1, 1, TO_DATE('05/07/2020', 'DD/MM/YYYY'), 'Miren qué lindo', 1);
+insert into Observation (fk_id_taxon, fk_id_observer, fk_id_coordinates, date_, comment_, fk_id_image) VALUES (13, 1, 1, TO_DATE('05/07/2001', 'DD/MM/YYYY'), 'Miren qué lindo', 1);
+insert into Observation (fk_id_taxon, fk_id_observer, fk_id_coordinates, date_, comment_, fk_id_image) VALUES (30, 1, 1, TO_DATE('05/07/2020', 'DD/MM/YYYY'), 'Avistado en el desierto', 1);
 
 
 INSERT INTO PERSON( FK_ID_COUNTRY, FIRST_NAME, LAST_NAME1, LAST_NAME2, EMAIL, DIRECCION) VALUES (40,'Alejandro', 'Quesada', 'Calderón', 'alejosequesada@gmail.com','125m Oeste del Estadio Municipal Allen Rigionni, Grecia, Alajuela');
@@ -156,7 +173,7 @@ ORDER BY LEVEL;
 
 select * from Taxonomia;
 
-
+select * from GPS_Coordinates;
 -- chile: 35, USA: 186, Italia: 81, Rusia: 142, Mexico: 109
 select * from COUNTRY;
 select * from USE_LICENSE;
@@ -174,4 +191,5 @@ SELECT observation_id, h.Path
     FROM Observation o, Hierarchy h
     WHERE o.fk_id_taxon = h.id_taxonomy;
 
+commit;
 

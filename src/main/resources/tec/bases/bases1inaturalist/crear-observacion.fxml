@@ -1,21 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tec.bases.bases1inaturalist.CrearObservacion">
+<AnchorPane prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tec.bases.bases1inaturalist.ObservationFormController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Label minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" text="Crear Observación" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Crear Observación" textAlignment="CENTER" />
+      <VBox alignment="CENTER" prefHeight="700.0" prefWidth="500.0" spacing="10.0" style="-fx-padding: 20px;">
+
+         <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="350.0" spacing="20.0">
+            <ImageView fx:id="imageView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: black;" />
+            <VBox maxHeight="-Infinity" prefHeight="100.0" spacing="20.0">
+               <Label layoutX="10.0" layoutY="145.0" text="Fecha de la foto" />
+               <DatePicker fx:id="photoDatePicker" />
+               <TextField fx:id="imageUrlField" prefWidth="200.0" promptText="URL de la Imagen" />
+               <Button fx:id="loadImageButton" mnemonicParsing="false" text="Cargar Imagen" />
+               <Label text="Seleccione una licencia:" />
+               <ChoiceBox fx:id="licenseChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+                  <items>
+                     <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Creative Commons" />
+                        <String fx:value="Royalty-free Extended License" />
+                        <String fx:value="Enterprise License" />
+                        <String fx:value="Public Domain" />
+                        <String fx:value="Commercial Image License" />
+                        <String fx:value="Rights Managed License" />
+                     <!-- Add more options as needed -->
+                     </FXCollections>
+                  </items>
+               </ChoiceBox>
+               <TextField fx:id="emailField" layoutX="10.0" layoutY="10.0" prefWidth="200.0" promptText="Correo del dueño" />
+            </VBox>
+         </HBox>
+
+         <HBox spacing="10.0">
+            <TextField fx:id="nameField" prefWidth="300.0" promptText="Taxón presente" />
+            <Button fx:id="clearButton" mnemonicParsing="false" text="Limpiar" />
+         </HBox>
+
+         <HBox spacing="10.0">
+            <DatePicker fx:id="datePicker" prefWidth="150.0" />
+            <TextField fx:id="latitudeField" promptText="Latitud" />
+            <TextField fx:id="longitudeField" promptText="Longitud" />
+         </HBox>
+
+         <TextArea fx:id="commentArea" prefHeight="50.0" promptText="Comentario" />
+
+         <HBox alignment="CENTER" spacing="20.0">
+            <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancelar" />
+            <Button fx:id="submitButton" mnemonicParsing="false" text="Enviar" onAction="#handleSubmitButtonClick"/>
+         </HBox>
       </VBox>
    </children>
 </AnchorPane>
