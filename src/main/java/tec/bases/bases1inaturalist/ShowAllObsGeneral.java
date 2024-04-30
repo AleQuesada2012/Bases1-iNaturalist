@@ -69,7 +69,7 @@ public class ShowAllObsGeneral {
 
 
 
-        // Add event handler to TableView to handle row clicks
+
         tableView.setRowFactory(tv -> {
             TableRow<ObservaGeneral> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -203,7 +203,8 @@ public class ShowAllObsGeneral {
             e.printStackTrace();
         }
     }
-    // Method to show alert dialog
+
+
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -235,6 +236,52 @@ public class ShowAllObsGeneral {
             gameBoardStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void eliminarObservacion(ActionEvent actionEvent) throws SQLException {
+        if (idSeleccionado <= 0){
+            showAlert("no ha seleccionado una observación o no hay observaciones por eliminar.");
+        }
+        connection = ConnectionManager.getConnection();
+        String query = "SELECT * FROM OBSERVATION WHERE fk_id_observer = ? and observation_id = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userID);
+        statement.setInt(2, idSeleccionado);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            // mostrar una alerta que le confirme si desea eliminar la observación y todas sus identificaciones.
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationDialog.setTitle("Eliminando observación...");
+            confirmationDialog.setHeaderText("Cuidado!");
+            confirmationDialog.setContentText("¿Está seguro que desea eliminar esta observación? se perderá el registro de todas sus identificaciones.");
+
+            // Se agregan botones de confirmación y anulación
+            confirmationDialog.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+
+            // Se muestra el diálogo y se espera la respuesta del usuario
+            ButtonType userResponse = confirmationDialog.showAndWait().orElse(ButtonType.CANCEL);
+
+            // Si el usuario da clic a OK, se cierra la aplicación
+            if (userResponse == ButtonType.OK) {
+                String deleteIdentificationQuery = "DELETE FROM IDENTIFICATION WHERE fk_id_observation = ?";
+                String deleteObservationQuery = "DELETE FROM OBSERVATION WHERE observation_id = ?";
+
+                PreparedStatement deleteIdentificationStmt = connection.prepareStatement(deleteIdentificationQuery);
+                deleteIdentificationStmt.setInt(1, idSeleccionado);
+                deleteIdentificationStmt.executeUpdate();
+                deleteIdentificationStmt.close();
+
+                PreparedStatement deleteObservationStmt = connection.prepareStatement(deleteObservationQuery);
+                deleteObservationStmt.setInt(1, idSeleccionado);
+                deleteObservationStmt.executeUpdate();
+                deleteObservationStmt.close();
+
+                showAlert("Se eliminaron todos los datos relacionados a la observación");
+
+            }
+        }else {
+            showAlert("La observación seleccionada no pertenece a su usuario.");
         }
     }
 }

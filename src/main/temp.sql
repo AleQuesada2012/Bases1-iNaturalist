@@ -193,6 +193,8 @@ select * from Image;
 select * from USUARIO;
 select * from Observation;
 select * from Rating;
+
+select * from Identification;
 -- función para obtener la jerarquía de todas las observaciones
 WITH Hierarchy AS (
     SELECT id_taxonomy, name, SYS_CONNECT_BY_PATH(Name, '\') AS Path
@@ -222,3 +224,20 @@ SELECT o.observation_id as id, o.fk_id_taxon,t.Name as Taxon, o.date_ as Fecha, 
                     WHERE t.id_taxonomy = o.fk_id_taxon and co.id_coordinates =
                     o.fk_id_coordinates and o.fk_id_observer = u.id_usuario and
                     u.fk_person_id = p.id_person and im.id_image = o.fk_id_image;
+
+
+-- REPORTE EXTRA: usando al menos 4 tablas
+SELECT
+    usuario.id_usuario,
+    person.id_person,
+    Identification.id_identification,
+    person.first_name,
+    person.last_name1,
+    person.last_name2,
+    country.country_name
+FROM
+    Identification
+        INNER JOIN Observation ON identification.fk_id_observation = observation.observation_id
+        INNER JOIN Usuario ON identification.fk_id_user = usuario.id_usuario
+        INNER JOIN Person ON usuario.fk_person_id = person.id_person
+        INNER JOIN Country ON person.fk_id_country = country.id_country;

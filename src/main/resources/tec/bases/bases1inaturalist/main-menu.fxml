@@ -10,11 +10,16 @@
           <Label fx:id="nombreLabel" alignment="TOP_CENTER" style="-fx-font-size: 14px;" text="User:" textAlignment="CENTER" />
       
           <Label style="-fx-font-size: 16px;" text="Seleccione una acción" textAlignment="CENTER" />
-         <HBox spacing="55.0">
+         <HBox alignment="CENTER" spacing="55.0">
             <children>
-                 <Button fx:id="btnCrearObs" style="-fx-padding: 10px 20px;" text="Crear Observación" onAction="#clickBtnCrearObs"/>
-                 <Button fx:id="btnMostrarObs" style="-fx-padding: 10px 20px;" text="Mostrar Observaciones" onAction="#clickBtnObsGenerales"/>
-                 <Button fx:id="btnMostrarTax" style="-fx-padding: 10px 20px;" text="Mostrar Taxonomías" onAction="#clickBtnTodasObs"/>
+                 <Button fx:id="btnCrearObs" onAction="#clickBtnCrearObs" style="-fx-padding: 10px 20px;" text="Crear Observación" />
+                 <Button fx:id="btnMostrarObs" onAction="#clickBtnObsGenerales" style="-fx-padding: 10px 20px;" text="Mostrar Observaciones" />
+            </children>
+         </HBox>
+         <HBox alignment="CENTER" layoutX="30.0" layoutY="194.0" spacing="55.0">
+            <children>
+                 <Button fx:id="btnMostrarTax" onAction="#clickBtnTodasObs" style="-fx-padding: 10px 20px;" text="Mostrar Taxonomías" />
+               <Button fx:id="btnIdentificaciones" onAction="#clickBtnTodasIds" style="-fx-padding: 10px 20px;" text="Mostrar Identificaciones" />
             </children>
          </HBox>
       </VBox>

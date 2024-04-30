@@ -287,7 +287,7 @@ public class ObservationFormController {
 
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
+        alert.setTitle("Éxito");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

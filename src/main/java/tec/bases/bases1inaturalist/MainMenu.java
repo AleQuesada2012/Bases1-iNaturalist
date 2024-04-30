@@ -20,6 +20,7 @@ public class MainMenu {
     public Button btnMostrarObs;
     public Button btnMostrarTax;
     public Label nombreLabel;
+    public Button btnIdentificaciones;
 
     private String nombre;
     private int userID;
@@ -104,6 +105,31 @@ public class MainMenu {
             // Se obtiene la referencia a la clase de control para la siguiente pantalla
             ObservationFormController control = loader.getController();
             control.initValores(userID, nombre);
+
+            // Cierra la ventana actual y abre el tablero
+            currentStage.close();
+            gameBoardStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickBtnTodasIds(ActionEvent actionEvent) {
+        Stage currentStage = (Stage) nombreLabel.getScene().getWindow();
+        try {
+            // Se carga el archivo FXML para el tablero de juego
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("todas-identificaciones.fxml"));
+            Parent observaRoot = loader.load();
+            Scene gameBoardScene = new Scene(observaRoot);
+
+            // Se crea una nueva Stage (ventana) para la pantalla de juego
+            Stage gameBoardStage = new Stage();
+            gameBoardStage.setScene(gameBoardScene);
+            gameBoardStage.setTitle("Bases-iNaturalist - Identificaciones");
+
+            // Se obtiene la referencia a la clase de control para la siguiente pantalla
+            ShowAllIds control = loader.getController();
+            control.initValores(nombre, userID);
 
             // Cierra la ventana actual y abre el tablero
             currentStage.close();
