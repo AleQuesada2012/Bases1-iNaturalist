@@ -18,10 +18,10 @@ public class ShowAllObsTaxons {
     private TableView<Observation> tableView;
 
     @FXML
-    private TableColumn<Observation, Integer> player1Column;
+    private TableColumn<Observation, Integer> obsIdColumn;
 
     @FXML
-    private TableColumn<Observation, String> player2Column;
+    private TableColumn<Observation, String> taxonColumn;
 
     @FXML
     private Button returnButton;
@@ -34,8 +34,8 @@ public class ShowAllObsTaxons {
     public void initialize() throws SQLException {
         conn = ConnectionManager.getConnection();
         // Set cell value factories
-        player1Column.setCellValueFactory(new PropertyValueFactory<>("observationId"));
-        player2Column.setCellValueFactory(new PropertyValueFactory<>("taxonomyPath"));
+        obsIdColumn.setCellValueFactory(new PropertyValueFactory<>("observationId"));
+        taxonColumn.setCellValueFactory(new PropertyValueFactory<>("taxonomyPath"));
 
         // Populate table with data
         populateTable();

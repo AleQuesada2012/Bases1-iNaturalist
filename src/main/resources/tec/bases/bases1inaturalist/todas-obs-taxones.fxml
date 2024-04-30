@@ -9,8 +9,8 @@
 
     <TableView fx:id="tableView" prefWidth="600.0">
         <columns>
-            <TableColumn fx:id="player1Column" prefWidth="42.0" text="ID" />
-            <TableColumn fx:id="player2Column" prefWidth="557.0" text="Jerarquía Taxonómica" />
+            <TableColumn fx:id="obsIdColumn" prefWidth="42.0" text="ID" />
+            <TableColumn fx:id="taxonColumn" prefWidth="557.0" text="Jerarquía Taxonómica" />
         </columns>
     </TableView>
 
