@@ -29,10 +29,8 @@ CREATE TABLE Image(id_image NUMBER NOT NULL PRIMARY KEY,
                    FOREIGN KEY(fk_license_id) REFERENCES Use_License);
 
 
-
-
 CREATE TABLE PERSON(id_person NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                    fk_id_country NUMBER,
+                    fk_id_country NUMBER NOT NULL,
                     first_name VARCHAR2(150),
                     last_name1 VARCHAR2(150),
                     last_name2 VARCHAR2(150),

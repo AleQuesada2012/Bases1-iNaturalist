@@ -2,18 +2,18 @@ package tec.bases.bases1inaturalist;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ShowAllObsGeneral {
 
@@ -21,6 +21,7 @@ public class ShowAllObsGeneral {
     public Button returnButton;
     public Button identifyBtn;
 
+    public ArrayList<Integer> idsObservaciones;
     public int idSeleccionado;
 
     @FXML
@@ -52,6 +53,8 @@ public class ShowAllObsGeneral {
     private int userID;
     private String userName;
 
+    private int rowIndex = -1; // Initialize rowIndex
+
     public void initialize() {
         ReinoColumn.setCellValueFactory(new PropertyValueFactory<>("reino"));
         especieColumn.setCellValueFactory(new PropertyValueFactory<>("especie"));
@@ -60,8 +63,24 @@ public class ShowAllObsGeneral {
         longitudeColumn.setCellValueFactory(new PropertyValueFactory<>("longitud"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("nombreUsuario"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("URL"));
-        poblarTabla();
+        idsObservaciones = new ArrayList<>();
         idSeleccionado = 0;
+        poblarTabla();
+
+
+
+        // Add event handler to TableView to handle row clicks
+        tableView.setRowFactory(tv -> {
+            TableRow<ObservaGeneral> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
+                    rowIndex = row.getIndex(); // Set rowIndex to the index of the clicked row
+                    System.out.println(rowIndex);
+                    idSeleccionado = idsObservaciones.get(rowIndex);
+                }
+            });
+            return row;
+        });
     }
 
     public void initValores(String nombre, int userID){
@@ -69,13 +88,10 @@ public class ShowAllObsGeneral {
         this.userID = userID;
     }
 
-
     private void poblarTabla() {
         try {
-            // Connect to the database
             connection = ConnectionManager.getConnection();
 
-            // Run the SQL query
             Statement statement = connection.createStatement();
             String query = "SELECT o.observation_id as id, t.Name as Taxon, o.date_ as Fecha, co.latidude as Latitud, " +
                     "co.longitude as Longitud, p.first_name as Nombre, p.last_name1 as Apellido, p.last_name2 as Apelli2, im.URL as URL " +
@@ -85,13 +101,12 @@ public class ShowAllObsGeneral {
                     "o.fk_id_coordinates and o.fk_id_observer = u.id_usuario and " +
                     "u.fk_person_id = p.id_person and im.id_image = o.fk_id_image";
             ResultSet resultSet = statement.executeQuery(query);
-            // Create ObservableList to hold ObservationRow objects
+
             ObservableList<ObservaGeneral> observationRows = FXCollections.observableArrayList();
 
-            // Process the ResultSet
             while (resultSet.next()) {
-                System.out.println("llega acá");
                 int id = resultSet.getInt("id");
+                idsObservaciones.add(id); // queda en el índice de la observación específica.
                 String taxon = resultSet.getString("Taxon");
                 String fecha = resultSet.getString("Fecha");
                 String latitud = resultSet.getString("Latitud");
@@ -100,9 +115,7 @@ public class ShowAllObsGeneral {
                 String apellido1 = resultSet.getString("Apellido");
                 String apellido2 = resultSet.getString("Apelli2");
                 String imageURL = resultSet.getString("URL");
-                System.out.println("Taxon: " + taxon + " Fecha: " + fecha + " Latitud: " + latitud + " Longitud: " + longitud);
 
-                // Run hierarchical query to get path of taxon name
                 String hierarchicalQuery = "WITH Hierarchy AS (" +
                         "    SELECT id_taxonomy, name, SYS_CONNECT_BY_PATH(Name, '\\') AS Path" +
                         "    FROM TAXONOMIA" +
@@ -125,16 +138,13 @@ public class ShowAllObsGeneral {
                     String kingdom = pathWords[1];
                     String speciesName = pathWords.length > 6 ? pathWords[6] : null;
                     nombre = nombre + " " + apellido1 + " " + apellido2;
-                    // Create ObservationRow object
                     observationRows.add(new ObservaGeneral(kingdom, speciesName, fecha, latitud, longitud, nombre, imageURL));
                 }
 
                 hierarchicalStatement.close();
             }
-            // Populate the TableView with ObservationRow objects
-            tableView.setItems(observationRows);
 
-            // Close resources
+            tableView.setItems(observationRows);
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
@@ -142,28 +152,85 @@ public class ShowAllObsGeneral {
         }
     }
 
-
     public void launchMainMenu() {
-        // Se obtiene la referencia a la ventana actual (stage)
         Stage currentStage = (Stage) tableView.getScene().getWindow();
 
         try {
-            // Se carga el archivo FXML para el tablero de juego
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main-menu.fxml"));
             Parent gameBoardRoot = loader.load();
             Scene gameBoardScene = new Scene(gameBoardRoot);
 
-
-            // Se crea una nueva Stage (ventana) para la pantalla
             Stage gameBoardStage = new Stage();
             gameBoardStage.setScene(gameBoardScene);
             gameBoardStage.setTitle("Bases-iNaturalist - Menú Principal");
 
-            // Se obtiene la referencia a la clase de control para la siguiente pantalla
             MainMenu control = loader.getController();
             control.initValores(this.userName, this.userID);
 
-            // Cierra la ventana actual y abre el nuevo
+            currentStage.close();
+            gameBoardStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickDetalles(){
+        if (idSeleccionado <= 0){
+            showAlert("Debe seleccionar una observación para ver detalles");
+            return;
+        }
+        Stage currentStage = (Stage) returnButton.getScene().getWindow();
+        try {
+            // Se carga el archivo FXML para el tablero de juego
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("detalles-obs.fxml"));
+            Parent observaRoot = loader.load();
+            Scene gameBoardScene = new Scene(observaRoot);
+
+
+            // Se crea una nueva Stage (ventana) para la pantalla de juego
+            Stage gameBoardStage = new Stage();
+            gameBoardStage.setScene(gameBoardScene);
+            gameBoardStage.setTitle("Bases-iNaturalist - Observaciones y Datos Generales");
+
+            // Se obtiene la referencia a la clase de control para la siguiente pantalla
+            DetallesController control = loader.getController();
+            control.initValores(userID, userName, idSeleccionado);
+
+            // Cierra la ventana actual y abre el tablero
+            currentStage.close();
+            gameBoardStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // Method to show alert dialog
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void clickIdentificar(ActionEvent actionEvent) {
+        Stage currentStage = (Stage) identifyBtn.getScene().getWindow();
+        try {
+            // Se carga el archivo FXML para el tablero de juego
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("calificacion.fxml"));
+            Parent observaRoot = loader.load();
+            Scene gameBoardScene = new Scene(observaRoot);
+
+
+            // Se crea una nueva Stage (ventana) para la pantalla de juego
+            Stage gameBoardStage = new Stage();
+            gameBoardStage.setScene(gameBoardScene);
+            gameBoardStage.setTitle("Bases-iNaturalist - Calificar Observación");
+
+            // Se obtiene la referencia a la clase de control para la siguiente pantalla
+            ClasificacionControl control = loader.getController();
+            control.initValores(userName, userID, idSeleccionado);
+
+            // Cierra la ventana actual y abre el tablero
             currentStage.close();
             gameBoardStage.show();
         } catch (Exception e) {

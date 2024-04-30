@@ -103,7 +103,7 @@ public class MainMenu {
 
             // Se obtiene la referencia a la clase de control para la siguiente pantalla
             ObservationFormController control = loader.getController();
-            control.initValores(userID);
+            control.initValores(userID, nombre);
 
             // Cierra la ventana actual y abre el tablero
             currentStage.close();

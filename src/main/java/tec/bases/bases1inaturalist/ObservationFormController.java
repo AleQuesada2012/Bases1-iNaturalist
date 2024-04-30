@@ -1,6 +1,9 @@
 package tec.bases.bases1inaturalist;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,6 +11,8 @@ import javafx.scene.control.DatePicker;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import java.sql.*;
 
@@ -54,6 +59,7 @@ public class ObservationFormController {
     private int licenseID;
     private int userID;
     private String email;
+    private String username;
 
     @FXML
     private void initialize() {
@@ -69,14 +75,19 @@ public class ObservationFormController {
         loadImageButton.setOnAction(event -> loadImage());
     }
 
-    public void initValores(int userID){
+    public void initValores(int userID, String nombre){
         this.userID = userID;
+        this.username = nombre;
     }
 
     private void loadImage() {
         String imageUrl = imageUrlField.getText();
         if (!imageUrl.isEmpty()) {
             try {
+                if (imageUrlField.getText().length() > 3000) {
+                    showAlert("La URL de la imagen supera el tamaño máximo (3000 caracteres)");
+                    return;
+                }
                 Image image = new Image(imageUrl);
                 imageView.setImage(image);
             } catch (Exception e) {
@@ -115,6 +126,28 @@ public class ObservationFormController {
                 return null;
             }
         });
+    }
+
+    public void handleCancelClick(){
+        Stage currentStage = (Stage) cancelButton.getScene().getWindow();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main-menu.fxml"));
+            Parent gameBoardRoot = loader.load();
+            Scene gameBoardScene = new Scene(gameBoardRoot);
+
+            Stage gameBoardStage = new Stage();
+            gameBoardStage.setScene(gameBoardScene);
+            gameBoardStage.setTitle("Bases-iNaturalist - Menú Principal");
+
+            MainMenu control = loader.getController();
+            control.initValores(this.username, this.userID);
+
+            currentStage.close();
+            gameBoardStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Method to handle submit button click
@@ -230,7 +263,7 @@ public class ObservationFormController {
             observationStatement.executeUpdate();
             observationStatement.close();
 
-            showAlert("La observación se ha registrado correctamente.");
+            showSuccess("La observación se ha registrado correctamente.");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -247,6 +280,14 @@ public class ObservationFormController {
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showSuccess(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

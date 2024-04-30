@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tec.bases.bases1inaturalist.MainMenu">
+   <children>
+      <VBox alignment="CENTER" prefHeight="300.0" prefWidth="600.0" spacing="30.0" style="-fx-padding: 20px;">
+      
+          <Label fx:id="nombreLabel" alignment="TOP_CENTER" style="-fx-font-size: 14px;" text="User:" textAlignment="CENTER" />
+      
+          <Label style="-fx-font-size: 16px;" text="Seleccione una acción" textAlignment="CENTER" />
+         <HBox spacing="55.0">
+            <children>
+                 <Button fx:id="btnCrearObs" style="-fx-padding: 10px 20px;" text="Crear Observación" onAction="#clickBtnCrearObs"/>
+                 <Button fx:id="btnMostrarObs" style="-fx-padding: 10px 20px;" text="Mostrar Observaciones" onAction="#clickBtnObsGenerales"/>
+                 <Button fx:id="btnMostrarTax" style="-fx-padding: 10px 20px;" text="Mostrar Taxonomías" onAction="#clickBtnTodasObs"/>
+            </children>
+         </HBox>
+      </VBox>
+   </children>
+</AnchorPane>

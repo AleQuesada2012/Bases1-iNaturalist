@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tec.bases.bases1inaturalist.DetallesController">
+    <children>
+        <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Detalles de Observación" textAlignment="CENTER" />
+        <VBox alignment="CENTER" prefHeight="700.0" prefWidth="500.0" spacing="10.0" style="-fx-padding: 20px;">
+
+            <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="350.0" spacing="20.0">
+                <ImageView fx:id="imageView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: black;" />
+                <VBox maxHeight="-Infinity" prefHeight="100.0" spacing="10.0">
+                    <Label layoutX="10.0" layoutY="145.0" text="Fecha de la foto" />
+                    <TextField fx:id="imgDateField" editable="false" prefWidth="200.0" promptText="FECHA" />
+                    <Label text="Licencia" />
+                    <TextField fx:id="licenseField" editable="false" layoutX="10.0" layoutY="10.0" prefWidth="200.0" />
+               <Label layoutX="10.0" layoutY="92.0" text="Dueño de la foto" />
+               <TextField fx:id="ownerField" editable="false" layoutX="10.0" layoutY="129.0" prefWidth="200.0" />
+                </VBox>
+            </HBox>
+
+            <HBox spacing="10.0">
+                <TextField fx:id="taxonField" editable="false" prefWidth="300.0" promptText="Taxón presente" />
+            <TextField fx:id="usernameField" editable="false" layoutX="10.0" layoutY="10.0" prefWidth="300.0" promptText="Usuario Creador" />
+            </HBox>
+
+            <HBox spacing="10.0">
+                <TextField fx:id="dateField" editable="false" promptText="Fecha Observación" />
+                <TextField fx:id="latitudeField" editable="false" promptText="Longitud" />
+            <TextField fx:id="longitudeField" editable="false" layoutX="167.0" layoutY="10.0" promptText="Latitud" />
+            </HBox>
+
+            <TextArea fx:id="commentArea" editable="false" prefHeight="50.0" promptText="Comentario" />
+
+            <HBox alignment="CENTER" spacing="20.0">
+                <Button fx:id="cancelButton" mnemonicParsing="false" text="Volver" onAction="#regresar"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>
