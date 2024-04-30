@@ -20,6 +20,7 @@
             <children>
                  <Button fx:id="btnMostrarTax" onAction="#clickBtnTodasObs" style="-fx-padding: 10px 20px;" text="Mostrar Taxonomías" />
                <Button fx:id="btnIdentificaciones" onAction="#clickBtnTodasIds" style="-fx-padding: 10px 20px;" text="Mostrar Identificaciones" />
+               <Button fx:id="btnReporteExtra" onAction="#clickBtnReporteExtra" style="-fx-padding: 10px 20px;" text="Reporte Extra" />
             </children>
          </HBox>
       </VBox>

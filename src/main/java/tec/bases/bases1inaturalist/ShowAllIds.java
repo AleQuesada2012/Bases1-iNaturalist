@@ -144,6 +144,7 @@ public class ShowAllIds {
     public void eliminarIdentificacion(ActionEvent actionEvent) throws SQLException {
         if (idSeleccionado <= 0){
             showAlert("no ha seleccionado una identificación o no hay identificaciones por eliminar.");
+            return;
         }
         connection = ConnectionManager.getConnection();
         String query = "SELECT * FROM IDENTIFICATION WHERE id_identification = ?";

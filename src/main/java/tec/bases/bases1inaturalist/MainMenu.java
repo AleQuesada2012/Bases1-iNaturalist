@@ -138,4 +138,29 @@ public class MainMenu {
             e.printStackTrace();
         }
     }
+
+    public void clickBtnReporteExtra(ActionEvent actionEvent) {
+        Stage currentStage = (Stage) nombreLabel.getScene().getWindow();
+        try {
+            // Se carga el archivo FXML para el tablero de juego
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("reporte-extra.fxml"));
+            Parent observaRoot = loader.load();
+            Scene gameBoardScene = new Scene(observaRoot);
+
+            // Se crea una nueva Stage (ventana) para la pantalla de juego
+            Stage gameBoardStage = new Stage();
+            gameBoardStage.setScene(gameBoardScene);
+            gameBoardStage.setTitle("Bases-iNaturalist");
+
+            // Se obtiene la referencia a la clase de control para la siguiente pantalla
+            ShowReporteExtra control = loader.getController();
+            control.initValores(nombre, userID);
+
+            // Cierra la ventana actual y abre el tablero
+            currentStage.close();
+            gameBoardStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

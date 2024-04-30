@@ -242,6 +242,7 @@ public class ShowAllObsGeneral {
     public void eliminarObservacion(ActionEvent actionEvent) throws SQLException {
         if (idSeleccionado <= 0){
             showAlert("no ha seleccionado una observación o no hay observaciones por eliminar.");
+            return;
         }
         connection = ConnectionManager.getConnection();
         String query = "SELECT * FROM OBSERVATION WHERE fk_id_observer = ? and observation_id = ?";
